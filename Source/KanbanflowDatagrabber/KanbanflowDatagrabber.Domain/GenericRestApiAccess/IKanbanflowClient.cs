@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public interface IKanbanflowClient
 {
-    Task<string> GetBoardAsync(string boardId);
-    Task<string> GetTasksAsync(string boardId, string columnId);
+    Task<string> GetBoardAsync();
+    Task<string> GetTasksAsync(string columnId);
     // Add other Kanbanflow API methods as needed
 }

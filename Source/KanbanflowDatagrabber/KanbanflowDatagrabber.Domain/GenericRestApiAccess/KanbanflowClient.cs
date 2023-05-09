@@ -1,27 +1,25 @@
-namespace KanbanflowDatagrabber.Domain.GenericRestApiAccess;
-
-using System.Net.Http;
-using System.Threading.Tasks;
+using KanbanflowDatagrabber.Domain.GenericRestApiAccess;
 
 public class KanbanflowClient : IKanbanflowClient
 {
     private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
     private const string BaseUrl = "https://kanbanflow.com/api/v1/";
 
     public KanbanflowClient(string apiKey)
     {
+        _apiKey = apiKey;
         _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{apiKey}:"))}");
     }
 
-    public async Task<string> GetBoardAsync(string boardId)
+    public async Task<string> GetBoardAsync()
     {
-        return await GetAsync($"{BaseUrl}boards/{boardId}");
+        return await GetAsync($"{BaseUrl}board?apiToken={_apiKey}");
     }
 
-    public async Task<string> GetTasksAsync(string boardId, string columnId)
+    public async Task<string> GetTasksAsync(string columnId)
     {
-        return await GetAsync($"{BaseUrl}boards/{boardId}/tasks?columnId={columnId}");
+        return await GetAsync($"{BaseUrl}tasks?columnId={columnId}&apiToken={_apiKey}");
     }
 
     // Add other Kanbanflow API methods as needed
