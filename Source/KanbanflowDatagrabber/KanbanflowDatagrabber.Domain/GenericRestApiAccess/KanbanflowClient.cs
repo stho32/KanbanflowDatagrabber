@@ -1,4 +1,6 @@
 using KanbanflowDatagrabber.Domain.GenericRestApiAccess;
+using KanbanflowDatagrabber.Domain.Model;
+using Newtonsoft.Json;
 
 public class KanbanflowClient : IKanbanflowClient
 {
@@ -12,9 +14,11 @@ public class KanbanflowClient : IKanbanflowClient
         _httpClient = new HttpClient();
     }
 
-    public async Task<string> GetBoardAsync()
+    public async Task<Board> GetBoardAsync()
     {
-        return await GetAsync($"{BaseUrl}board?apiToken={_apiKey}");
+        string boardData = await GetAsync($"{BaseUrl}board?apiToken={_apiKey}");
+        var boardObject = JsonConvert.DeserializeObject<Board>(boardData);
+        return boardObject;
     }
 
     public async Task<string> GetTasksAsync(string columnId)
